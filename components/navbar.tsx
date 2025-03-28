@@ -19,9 +19,19 @@ import { usePathname } from "next/navigation";
 import { Logo, SearchIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
+import { useAuth } from "@/contexts/auth";
+import { logout } from "@/utils/actions";
 import { Button } from "@heroui/button";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@heroui/dropdown";
 
 export const Navbar = () => {
+  const auth = useAuth();
+  const user = auth?.user;
   const path = usePathname();
 
   const searchInput = (
@@ -44,6 +54,8 @@ export const Navbar = () => {
       type="search"
     />
   );
+
+  console.log(user);
 
   return (
     <HeroUINavbar position="sticky">
@@ -72,13 +84,27 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex" justify="end">
-        <NavbarItem className="hidden sm:flex gap-6">
+        <NavbarItem className="hidden sm:flex  gap-6">
           <ThemeSwitch />
-          <NextLink href="/login">
-            <Button color="primary" variant="ghost">
-              Giriş Yap
-            </Button>
-          </NextLink>
+          {user && (
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="ghost" color="primary">
+                  {user.email}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem
+                  key="delete"
+                  className="text-danger"
+                  color="danger"
+                  onPress={logout}
+                >
+                  Çıkış Yap
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          )}
         </NavbarItem>
       </NavbarContent>
 
@@ -100,6 +126,13 @@ export const Navbar = () => {
               </Link>
             </NavbarMenuItem>
           ))}
+          {user && (
+            <NavbarMenuItem className="text-danger">
+              <Link color="danger" size="lg" onPress={logout}>
+                Çıkış Yap
+              </Link>
+            </NavbarMenuItem>
+          )}
         </div>
       </NavbarMenu>
     </HeroUINavbar>

@@ -1,10 +1,9 @@
 'use client'
+import EntityModal from '@/components/entityModal'
 import { PlusIcon, SearchIcon } from '@/components/icons'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/modal'
-import { NumberInput } from '@heroui/number-input'
-import { Select, SelectItem } from '@heroui/select'
+import { useDisclosure } from '@heroui/modal'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
 import { useCallback, useMemo, useState } from 'react'
 
@@ -97,107 +96,6 @@ const columns = [
 	}
 ]
 
-const groups = [
-	{
-		key: 'A',
-		label: 'A'
-	},
-	{
-		key: 'B',
-		label: 'B'
-	}
-]
-
-const to = [
-	{
-		key: 'Market',
-		label: 'Market'
-	},
-	{
-		key: 'ATM',
-		label: 'ATM'
-	},
-	{
-		key: 'Terzi',
-		label: 'Terzi'
-	},
-	{
-		key: 'Hastane',
-		label: 'Hastane'
-	},
-	{
-		key: 'Sohbet',
-		label: 'Sohbet'
-	},
-	{
-		key: 'Mukabele',
-		label: 'Mukabele'
-	},
-	{
-		key: 'Teravih',
-		label: 'Teravih'
-	},
-	{
-		key: 'İftar',
-		label: 'İftar'
-	},
-	{
-		key: 'Diğer',
-		label: 'Diğer'
-	}
-]
-
-const from = [
-	{
-		key: 'Cemil Abi',
-		label: 'Cemil Abi'
-	},
-	{
-		key: 'Hidayet Abi',
-		label: 'Hidayet Abi'
-	},
-	{
-		key: 'Gökhan Abi',
-		label: 'Gökhan Abi'
-	},
-	{
-		key: 'Mustafa Abi',
-		label: 'Mustafa Abi'
-	},
-	{
-		key: 'Arif Abi',
-		label: 'Arif Abi'
-	},
-	{
-		key: 'Alperen Abi',
-		label: 'Alperen Abi'
-	},
-	{
-		key: 'Salih Abi',
-		label: 'Salih Abi'
-	},
-	{
-		key: 'Faruk Abi',
-		label: 'Faruk Abi'
-	},
-	{
-		key: 'Rüçhan Abi',
-		label: 'Rüçhan Abi'
-	},
-	{
-		key: 'Selimhan Abi',
-		label: 'Selimhan Abi'
-	},
-	{
-		key: 'Eren Abi',
-		label: 'Eren Abi'
-	},
-	{
-		key: 'Diğer',
-		label: 'Diğer'
-	}
-]
-
 export default function GirisPage() {
 	const [filterValue, setFilterValue] = useState('')
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -253,39 +151,7 @@ export default function GirisPage() {
 
 	return (
 		<section className="flex flex-col h-full items-center justify-center gap-4 py-8 md:py-10">
-			<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-				<ModalContent>
-					{onClose => (
-						<>
-							<ModalHeader className="flex flex-col gap-1">Ekle</ModalHeader>
-							<ModalBody className="flex  gap-4">
-								<Select label="Grup" size="sm" isRequired>
-									{groups.map(group => (
-										<SelectItem key={group.key}>{group.label}</SelectItem>
-									))}
-								</Select>
-								<NumberInput hideStepper label="No" size="sm" isRequired />
-								<Select label="Nereye" size="sm" isRequired>
-									{to.map(t => (
-										<SelectItem key={t.key}>{t.label}</SelectItem>
-									))}
-								</Select>
-								<Select label="Kimden İzinli" size="sm" isRequired>
-									{from.map(f => (
-										<SelectItem key={f.key}>{f.label}</SelectItem>
-									))}
-								</Select>
-							</ModalBody>
-							<ModalFooter>
-								<Button color="primary" onPress={onClose}>
-									Onayla
-								</Button>
-							</ModalFooter>
-						</>
-					)}
-				</ModalContent>
-			</Modal>
-
+			<EntityModal isOpen={isOpen} onOpenChange={onOpenChange} />
 			<span className="text-lg font-semibold text-gray-600">{formattedDate}</span>
 			<span className="text-2xl font-bold text-gray-900">{formattedDay}</span>
 			<Table aria-label="Example table with dynamic content" topContent={topContent} topContentPlacement="outside">

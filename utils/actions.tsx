@@ -48,3 +48,14 @@ export async function createEntity(data: any) {
 
 	return result
 }
+
+export async function getEntities(date: string) {
+	const { data, error } = await supabase.from('Entities').select('*').eq('date', date)
+
+	if (error) {
+		console.error(error.message)
+		throw error
+	}
+
+	return data
+}

@@ -1,11 +1,12 @@
 'use client'
 import EntityModal from '@/components/entityModal'
 import { PlusIcon, SearchIcon } from '@/components/icons'
+import { getEntities } from '@/utils/actions'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
 import { useDisclosure } from '@heroui/modal'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 const entities = [
 	{
@@ -99,14 +100,15 @@ const columns = [
 export default function GirisPage() {
 	const [filterValue, setFilterValue] = useState('')
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const [items, setItems] = useState([])
 
 	const filteredItems = useMemo(() => {
-		let filteredUsers = [...entities]
+		let filteredEntites = [...items]
 
-		filteredUsers = filteredUsers.filter(entity => entity.name.toLowerCase().includes(filterValue.toLowerCase()))
+		filteredEntites = filteredEntites.filter(entity => entity.name.toLowerCase().includes(filterValue.toLowerCase()))
 
-		return filteredUsers
-	}, [filterValue, entities])
+		return filteredEntites
+	}, [filterValue, items])
 
 	const onClear = useCallback(() => {
 		setFilterValue('')
@@ -127,15 +129,15 @@ export default function GirisPage() {
 		switch (columnKey) {
 			case 'enter':
 				return cellValue ? (
-					`${date.getHours()}:${date.getMinutes()}`
+					`${cellValue.split(':')[0]}:${cellValue.split(':')[1]}`
 				) : (
 					<Button color="success" size="sm" className="w-1/2">
 						Giriş
 					</Button>
 				)
 			case 'exit':
-				const date = new Date(cellValue)
-				return `${date.getHours()}:${date.getMinutes()}`
+				const [hours, minutes] = cellValue.split(':')
+				return `${hours}:${minutes}`
 			default:
 				return cellValue
 		}
@@ -148,6 +150,15 @@ export default function GirisPage() {
 
 	const formattedDate = date.toLocaleDateString('tr-TR', optionsDate) // "29 Mart 2025"
 	const formattedDay = date.toLocaleDateString('tr-TR', optionsDay) // "Cumartesi"
+
+	useEffect(() => {
+		async function fetchData() {
+			const data = await getEntities(new Date().toISOString().split('T')[0])
+			setItems(data)
+		}
+
+		fetchData()
+	}, [])
 
 	return (
 		<section className="flex flex-col h-full items-center justify-center gap-4 py-8 md:py-10">

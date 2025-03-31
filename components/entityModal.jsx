@@ -109,7 +109,7 @@ const approvedBy = [
 	}
 ]
 
-export default function EntityModal({ isOpen, onOpenChange }) {
+export default function EntityModal({ isOpen, onOpenChange, fetchTodaysEntities }) {
 	const [group, setGroup] = useState('')
 	const [no, setNo] = useState()
 	const [name, setName] = useState('')
@@ -129,7 +129,9 @@ export default function EntityModal({ isOpen, onOpenChange }) {
 			exit: now.toLocaleTimeString('tr-TR', { hour12: false }),
 			date: now
 		}
-		createEntity(data)
+		createEntity(data).then(res => {
+			fetchTodaysEntities()
+		})
 	}
 
 	useEffect(() => {

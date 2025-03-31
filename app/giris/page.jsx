@@ -1,70 +1,15 @@
 'use client'
 import EntityModal from '@/components/entityModal'
 import { PlusIcon, SearchIcon } from '@/components/icons'
-import { getEntities } from '@/utils/actions'
+import MontserratFont from '@/components/montserrat'
+import { getEntities, supabase } from '@/utils/actions'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
 import { useDisclosure } from '@heroui/modal'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-
-const entities = [
-	{
-		id: '1',
-		group: 'A',
-		no: 101,
-		name: 'John Doe',
-		from: 'New York',
-		to: 'Los Angeles',
-		enter: '2025-03-01T08:30:00',
-		exit: '2025-03-01T18:45:00',
-		date: '2025-03-01"'
-	},
-	{
-		id: '2',
-		group: 'B',
-		no: 102,
-		name: 'Jane Smith',
-		from: 'Chicago',
-		to: 'San Francisco',
-		enter: '2025-03-02T09:15:00',
-		exit: '2025-03-02T19:20:00',
-		date: '2025-03-02'
-	},
-	{
-		id: '3',
-		group: 'A',
-		no: 103,
-		name: 'Michael Johnson',
-		from: 'Houston',
-		to: 'Seattle',
-		enter: '2025-03-03T07:45:00',
-		exit: '2025-03-03T17:30:00',
-		date: '2025-03-03'
-	},
-	{
-		id: '4',
-		group: 'C',
-		no: 104,
-		name: 'Emily Davis',
-		from: 'Miami',
-		to: 'Denver',
-		enter: '2025-03-04T10:00:00',
-		exit: '2025-03-04T20:10:00',
-		date: '2025-03-04'
-	},
-	{
-		id: '5',
-		group: 'B',
-		no: 105,
-		name: 'William Brown',
-		from: 'Boston',
-		to: 'Las Vegas',
-		enter: null,
-		exit: '2025-03-05T06:20:00',
-		date: '2025-03-05'
-	}
-]
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 const columns = [
 	{
@@ -98,6 +43,7 @@ const columns = [
 ]
 
 export default function GirisPage() {
+	const isFirstRender = useRef(true)
 	const [filterValue, setFilterValue] = useState('')
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const [items, setItems] = useState([])
@@ -114,24 +60,75 @@ export default function GirisPage() {
 		setFilterValue('')
 	}, [])
 
+	const exportToPdf = () => {
+		const doc = new jsPDF({ orientation: 'landscape' })
+
+		doc.addFileToVFS('/Montserrat-VariableFont_wght.ttf', MontserratFont)
+		doc.addFont('/Montserrat-VariableFont_wght.ttf', 'Montserrat', 'normal')
+		doc.setFont('Montserrat')
+
+		const columns = Object.keys(items[0])
+		const rows = items.map(item => columns.map(col => item[col]))
+
+		doc.text('Çıkış & Giriş Listesi', 14, 10)
+		const tableStartY = 20
+
+		autoTable(doc, {
+			head: [columns],
+			body: rows,
+			startY: tableStartY,
+			styles: { fontSize: 12, cellPadding: 6, overflow: 'linebreak' },
+			headStyles: { fillColor: [240, 240, 240], textColor: 0, fontStyle: 'bold' },
+			alternateRowStyles: { fillColor: [250, 250, 250] },
+			margin: { left: 10, right: 10 }
+		})
+
+		// Get table height
+
+		// Draw rounded rectangle around the table
+		doc.setDrawColor(200) // Light gray border
+		doc.setLineWidth(1)
+
+		// Save the PDF
+		doc.save('exported-data.pdf')
+	}
+
 	const topContent = (
 		<div className="flex justify-between items-end">
 			<Input isClearable aria-label="Search" value={filterValue} onValueChange={setFilterValue} onClear={() => onClear()} className="w-1/3 " labelPlacement="outside" placeholder="Arama" startContent={<SearchIcon />} type="text" />
+			<Button color="primary" size="sm" onPress={exportToPdf}>
+				Export{' '}
+			</Button>
 			<Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
 				Ekle
 			</Button>
 		</div>
 	)
 
-	const renderCell = useCallback((user, columnKey) => {
-		const cellValue = user[columnKey]
+	const updateEnter = (id, enter) => {
+		supabase
+			.from('Entities')
+			.update({ enter: enter })
+			.eq('id', id)
+			.then(res => {
+				console.log('Update response:', res)
+				if (res.error) {
+					console.error('Error updating enter time:', res.error)
+				} else {
+					fetchTodaysEntities()
+				}
+			})
+	}
+
+	const renderCell = useCallback((entity, columnKey) => {
+		const cellValue = entity[columnKey]
 
 		switch (columnKey) {
 			case 'enter':
 				return cellValue ? (
 					`${cellValue.split(':')[0]}:${cellValue.split(':')[1]}`
 				) : (
-					<Button color="success" size="sm" className="w-1/2">
+					<Button color="success" size="sm" className="w-1/2" onPress={() => updateEnter(entity.id, new Date().toLocaleTimeString('tr-TR', { hour12: false }))}>
 						Giriş
 					</Button>
 				)
@@ -140,6 +137,18 @@ export default function GirisPage() {
 				return `${hours}:${minutes}`
 			default:
 				return cellValue
+		}
+	}, [])
+
+	const fetchTodaysEntities = useCallback(async () => {
+		try {
+			console.log('fetch')
+
+			const today = new Date().toISOString().split('T')[0]
+			const data = await getEntities(today)
+			setItems(data)
+		} catch (error) {
+			console.error('Error fetching entities:', error)
 		}
 	}, [])
 
@@ -152,17 +161,15 @@ export default function GirisPage() {
 	const formattedDay = date.toLocaleDateString('tr-TR', optionsDay) // "Cumartesi"
 
 	useEffect(() => {
-		async function fetchData() {
-			const data = await getEntities(new Date().toISOString().split('T')[0])
-			setItems(data)
+		if (isFirstRender.current) {
+			isFirstRender.current = false
+			fetchTodaysEntities()
 		}
-
-		fetchData()
-	}, [])
+	}, [fetchTodaysEntities])
 
 	return (
 		<section className="flex flex-col h-full items-center justify-center gap-4 py-8 md:py-10">
-			<EntityModal isOpen={isOpen} onOpenChange={onOpenChange} />
+			<EntityModal isOpen={isOpen} onOpenChange={onOpenChange} fetchTodaysEntities={fetchTodaysEntities} />
 			<span className="text-lg font-semibold text-gray-600">{formattedDate}</span>
 			<span className="text-2xl font-bold text-gray-900">{formattedDay}</span>
 			<Table aria-label="Example table with dynamic content" topContent={topContent} topContentPlacement="outside">

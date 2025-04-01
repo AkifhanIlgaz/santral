@@ -6,6 +6,7 @@ import { getEntities, supabase } from '@/utils/actions'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
 import { useDisclosure } from '@heroui/modal'
+import { Select, SelectItem } from '@heroui/select'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
@@ -42,19 +43,32 @@ const columns = [
 	}
 ]
 
+const groups = [
+	{
+		key: 'A',
+		label: 'A'
+	},
+	{
+		key: 'B',
+		label: 'B'
+	}
+]
+
 export default function GirisPage() {
 	const isFirstRender = useRef(true)
 	const [filterValue, setFilterValue] = useState('')
+	const [selectedGroups, setSelectedGroups] = useState(new Set(["A", "B"]))
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const [items, setItems] = useState([])
 
 	const filteredItems = useMemo(() => {
 		let filteredEntites = [...items]
+		const groups = [...selectedGroups.values()]
 
-		filteredEntites = filteredEntites.filter(entity => entity.name.toLowerCase().includes(filterValue.toLowerCase()))
+		filteredEntites = filteredEntites.filter(entity => entity.name.toLowerCase().includes(filterValue.toLowerCase())).filter(entity => groups.includes(entity.group))
 
 		return filteredEntites
-	}, [filterValue, items])
+	}, [filterValue, items, selectedGroups])
 
 	const onClear = useCallback(() => {
 		setFilterValue('')
@@ -96,12 +110,19 @@ export default function GirisPage() {
 	const topContent = (
 		<div className="flex justify-between items-end">
 			<Input isClearable aria-label="Search" value={filterValue} onValueChange={setFilterValue} onClear={() => onClear()} className="w-1/3 " labelPlacement="outside" placeholder="Arama" startContent={<SearchIcon />} type="text" />
-			<Button color="primary" size="sm" onPress={exportToPdf}>
+			{/* <Button color="primary" size="sm" onPress={exportToPdf}>
 				Export{' '}
-			</Button>
-			<Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
-				Ekle
-			</Button>
+			</Button> */}
+			<div className="flex w-1/6 items-center justify-end gap-4">
+				<Select label="Grup" size="sm" name="group" selectionMode="multiple" defaultSelectedKeys={['A', 'B']} onSelectionChange={setSelectedGroups}>
+					{groups.map(group => (
+						<SelectItem key={group.key}>{group.label}</SelectItem>
+					))}
+				</Select>
+				<Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
+					Ekle
+				</Button>
+			</div>
 		</div>
 	)
 
@@ -142,10 +163,10 @@ export default function GirisPage() {
 
 	const fetchTodaysEntities = useCallback(async () => {
 		try {
-			console.log('fetch')
-
 			const today = new Date().toISOString().split('T')[0]
 			const data = await getEntities(today)
+			console.log(data)
+
 			setItems(data)
 		} catch (error) {
 			console.error('Error fetching entities:', error)

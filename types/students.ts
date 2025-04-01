@@ -10,7 +10,5 @@ const students: Record<string, string> = {
 
 export function getStudentName(group: string, studentId: number): string {
 	const key = `${group}-${studentId}`
-	console.log(key)
-
 	return students[key] || 'Talebe bulunamadı'
 }

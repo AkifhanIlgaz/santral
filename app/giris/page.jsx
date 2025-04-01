@@ -57,7 +57,7 @@ const groups = [
 export default function GirisPage() {
 	const isFirstRender = useRef(true)
 	const [filterValue, setFilterValue] = useState('')
-	const [selectedGroups, setSelectedGroups] = useState(new Set(["A", "B"]))
+	const [selectedGroups, setSelectedGroups] = useState(new Set(['A', 'B']))
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const [items, setItems] = useState([])
 
@@ -108,13 +108,13 @@ export default function GirisPage() {
 	}
 
 	const topContent = (
-		<div className="flex justify-between items-end">
+		<div className="flex justify-between items-center ">
 			<Input isClearable aria-label="Search" value={filterValue} onValueChange={setFilterValue} onClear={() => onClear()} className="w-1/3 " labelPlacement="outside" placeholder="Arama" startContent={<SearchIcon />} type="text" />
 			{/* <Button color="primary" size="sm" onPress={exportToPdf}>
 				Export{' '}
 			</Button> */}
 			<div className="flex w-1/6 items-center justify-end gap-4">
-				<Select label="Grup" size="sm" name="group" selectionMode="multiple" defaultSelectedKeys={['A', 'B']} onSelectionChange={setSelectedGroups}>
+				<Select label="Grup" variant="underlined" size="sm" name="group" selectionMode="multiple" defaultSelectedKeys={['A', 'B']} onSelectionChange={setSelectedGroups}>
 					{groups.map(group => (
 						<SelectItem key={group.key}>{group.label}</SelectItem>
 					))}

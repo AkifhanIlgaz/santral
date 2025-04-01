@@ -113,7 +113,7 @@ export default function GirisPage() {
 			{/* <Button color="primary" size="sm" onPress={exportToPdf}>
 				Export{' '}
 			</Button> */}
-			<div className="flex w-1/6 items-center justify-end gap-4">
+			<div className="flex w-1/2 md:w-1/6 items-center justify-end gap-4">
 				<Select label="Grup" variant="underlined" size="sm" name="group" selectionMode="multiple" defaultSelectedKeys={['A', 'B']} onSelectionChange={setSelectedGroups}>
 					{groups.map(group => (
 						<SelectItem key={group.key}>{group.label}</SelectItem>
@@ -189,10 +189,12 @@ export default function GirisPage() {
 	}, [fetchTodaysEntities])
 
 	return (
-		<section className="flex flex-col h-full items-center justify-center gap-4 py-8 md:py-10">
+		<section className="flex flex-col h-full items-center justify-center gap-12 py-8 md:py-10">
 			<EntityModal isOpen={isOpen} onOpenChange={onOpenChange} fetchTodaysEntities={fetchTodaysEntities} />
-			<span className="text-lg font-semibold text-gray-600">{formattedDate}</span>
-			<span className="text-2xl font-bold text-gray-900">{formattedDay}</span>
+			<div className="flex flex-col">
+				<span className="text-lg font-semibold text-gray-600 dark:text-gray-400">{formattedDate}</span>
+				<span className="text-2xl font-bold text-gray-900 dark:text-gray-100">{formattedDay}</span>
+			</div>
 			<Table aria-label="Example table with dynamic content" topContent={topContent} topContentPlacement="outside">
 				<TableHeader columns={columns}>{column => <TableColumn key={column.key}>{column.label}</TableColumn>}</TableHeader>
 				<TableBody items={filteredItems}>{item => <TableRow key={item.key}>{columnKey => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>}</TableBody>

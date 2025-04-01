@@ -6,7 +6,6 @@ import { Tab, Tabs } from '@heroui/tabs'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { Logo } from '@/components/icons'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { siteConfig } from '@/config/site'
 import { useAuth } from '@/contexts/auth'
@@ -23,10 +22,7 @@ export const Navbar = () => {
 		<HeroUINavbar position="sticky">
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarBrand as="li" className="gap-3 max-w-fit">
-					<NextLink className="flex justify-start items-center gap-1" href="/">
-						<Logo />
-						<p className="font-bold text-inherit">ACME</p>
-					</NextLink>
+					<p className="font-bold text-inherit">Ahmediye</p>
 				</NavbarBrand>
 			</NavbarContent>
 

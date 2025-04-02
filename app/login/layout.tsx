@@ -11,7 +11,7 @@ export default function LoginLayout({ children }: { children: React.ReactNode })
 
 	useEffect(() => {
 		if (user) {
-			router.push(links.login)
+			router.push(links.enter)
 		}
 	}, [user, router])
 

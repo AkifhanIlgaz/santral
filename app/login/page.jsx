@@ -1,16 +1,19 @@
 'use client'
 
 import { errorMessages, labels, texts } from '@/constants/helperTexts'
+import { links } from '@/constants/links'
 import { Alert } from '@heroui/alert'
 import { Button } from '@heroui/button'
 import { Form } from '@heroui/form'
 import { Input } from '@heroui/input'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { login } from '../../utils/actions'
 
 export default function LoginPage() {
 	const [isVisible, setIsVisible] = useState(false)
 	const [loginError, setLoginError] = useState(null)
+	const router = useRouter()
 
 	const toggleVisibility = () => setIsVisible(!isVisible)
 
@@ -21,6 +24,7 @@ export default function LoginPage() {
 
 		login(data.email, data.password)
 			.then(res => {
+				router.push(links.enter)
 				setLoginError(null)
 			})
 			.catch(err => {

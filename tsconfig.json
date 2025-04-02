@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/login/page.jsx", "app/giris/page.jsx", "app/gecmis/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/login/page.jsx", "app/(authenticated)/giris/page.jsx", "app/(authenticated)/gecmis/page.jsx"],
   "exclude": ["node_modules"]
 }

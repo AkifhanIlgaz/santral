@@ -1,8 +1,5 @@
 'use client'
 import EntityTable from '@/components/entityTable'
-import MontserratFont from '@/components/montserrat'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
 
 const columns = [
 	{
@@ -47,39 +44,6 @@ const groups = [
 ]
 
 export default function GirisPage() {
-	const exportToPdf = () => {
-		const doc = new jsPDF({ orientation: 'landscape' })
-
-		doc.addFileToVFS('/Montserrat-VariableFont_wght.ttf', MontserratFont)
-		doc.addFont('/Montserrat-VariableFont_wght.ttf', 'Montserrat', 'normal')
-		doc.setFont('Montserrat')
-
-		const columns = Object.keys(items[0])
-		const rows = items.map(item => columns.map(col => item[col]))
-
-		doc.text('Çıkış & Giriş Listesi', 14, 10)
-		const tableStartY = 20
-
-		autoTable(doc, {
-			head: [columns],
-			body: rows,
-			startY: tableStartY,
-			styles: { fontSize: 12, cellPadding: 6, overflow: 'linebreak' },
-			headStyles: { fillColor: [240, 240, 240], textColor: 0, fontStyle: 'bold' },
-			alternateRowStyles: { fillColor: [250, 250, 250] },
-			margin: { left: 10, right: 10 }
-		})
-
-		// Get table height
-
-		// Draw rounded rectangle around the table
-		doc.setDrawColor(200) // Light gray border
-		doc.setLineWidth(1)
-
-		// Save the PDF
-		doc.save('exported-data.pdf')
-	}
-
 	const date = new Date()
 
 	const optionsDate = { day: 'numeric', month: 'long', year: 'numeric' }

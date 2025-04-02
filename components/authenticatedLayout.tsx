@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/auth'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function DocsLayout({ children }: { children: React.ReactNode }) {
+export default function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
 	const auth = useAuth()
 	const router = useRouter()
 	const user = auth?.user

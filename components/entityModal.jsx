@@ -1,6 +1,7 @@
 import { approvedBy } from '@/constants/approvedBy'
 import { destinations } from '@/constants/destinations'
 import { groups } from '@/constants/groups'
+import { labels, texts } from '@/constants/helperTexts'
 import { getStudentName } from '@/constants/students'
 import { createEntity } from '@/utils/actions'
 import { Button } from '@heroui/button'
@@ -57,19 +58,19 @@ export default function EntityModal({ isOpen, onOpenChange, fetchTodaysEntities 
 						<ModalHeader className="flex flex-col gap-1">Ekle</ModalHeader>
 
 						<ModalBody className="flex w-full gap-4">
-							<Select label="Grup" size="sm" isRequired name="group" onChange={e => setGroup(e?.target.value)}>
+							<Select label={labels.group} size="sm" isRequired name="group" onChange={e => setGroup(e?.target.value)}>
 								{groups.map(group => (
 									<SelectItem key={group.key}>{group.label}</SelectItem>
 								))}
 							</Select>
-							<NumberInput hideStepper label="No" size="sm" name="no" isRequired onChange={e => setNo(e.target?.value)} />
-							<Input label="İsim" labelPlacement="inside" size="sm" name="name" isReadOnly type="text" value={name} />
-							<Select label="Nereye" size="sm" isRequired name="to">
+							<NumberInput hideStepper label={labels.no} size="sm" name="no" isRequired onChange={e => setNo(e.target?.value)} />
+							<Input label={labels.name} labelPlacement="inside" size="sm" name="name" isReadOnly type="text" value={name} />
+							<Select label={labels.to} size="sm" isRequired name="to">
 								{destinations.map(t => (
 									<SelectItem key={t.key}>{t.label}</SelectItem>
 								))}
 							</Select>
-							<Select label="Kimden İzinli" size="sm" isRequired name="from">
+							<Select label={labels.approvedBy} size="sm" isRequired name="from">
 								{approvedBy.map(f => (
 									<SelectItem key={f.key}>{f.label}</SelectItem>
 								))}
@@ -77,10 +78,10 @@ export default function EntityModal({ isOpen, onOpenChange, fetchTodaysEntities 
 						</ModalBody>
 						<ModalFooter className="flex w-full justify-center items-center">
 							<Button color="danger" onPress={onClose}>
-								İptal
+								{texts.cancel}
 							</Button>
 							<Button color="primary" type="submit" onPress={onClose}>
-								Onayla
+								{texts.confirm}
 							</Button>
 						</ModalFooter>
 					</Form>

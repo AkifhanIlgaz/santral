@@ -1,5 +1,6 @@
 'use client'
 
+import { errorMessages, labels, texts } from '@/constants/helperTexts'
 import { Alert } from '@heroui/alert'
 import { Button } from '@heroui/button'
 import { Form } from '@heroui/form'
@@ -24,16 +25,16 @@ export default function LoginPage() {
 			})
 			.catch(err => {
 				if (err.message == 'Invalid login credentials') {
-					setLoginError('Geçersiz e-posta veya şifre !')
+					setLoginError(errorMessages.invalidCredentials)
 				} else {
-					setLoginError('Bir hata oluştu. Lütfen tekrar deneyin.')
+					setLoginError(errorMessages.somethingWentWrong)
 				}
 			})
 	}
 
 	return (
 		<Form onSubmit={onSubmit} className=" flex flex-col w-full max-w-2xl text-center items-center justify-center gap-8">
-			<Input isRequired errorMessage="Lütfen geçerli bir e-posta adresi girin" label="Email" type="email" name="email" variant="bordered" />
+			<Input isRequired errorMessage={errorMessages.invalidEmail} label={labels.email} type="email" name="email" variant="bordered" />
 			<Input
 				isRequired
 				name="password"
@@ -42,13 +43,13 @@ export default function LoginPage() {
 						{isVisible ? <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" /> : <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />}
 					</button>
 				}
-				label="Şifre"
+				label={labels.password}
 				variant="bordered"
 				type={isVisible ? 'text' : 'password'}
 			/>
 
 			<Button size="lg" color="primary" className="w-1/2" type="submit">
-				Giriş Yap
+				{texts.login}
 			</Button>
 
 			{loginError && (

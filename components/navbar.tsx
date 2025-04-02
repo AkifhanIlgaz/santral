@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 
 import { ThemeSwitch } from '@/components/theme-switch'
 import { siteConfig } from '@/config/site'
+import { texts } from '@/constants/helperTexts'
 import { useAuth } from '@/contexts/auth'
 import { logout } from '@/utils/actions'
 import { Button } from '@heroui/button'
@@ -73,7 +74,7 @@ export const Navbar = () => {
 					{user && (
 						<NavbarMenuItem className="text-danger">
 							<Link color="danger" size="lg" onPress={logout}>
-								Çıkış Yap
+								{texts.logout}
 							</Link>
 						</NavbarMenuItem>
 					)}

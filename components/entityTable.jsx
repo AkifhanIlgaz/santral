@@ -1,6 +1,8 @@
 'use client'
 import { PlusIcon, SearchIcon } from '@/components/icons'
 import { groups } from '@/constants/groups'
+import { labels, placeHolders, texts } from '@/constants/helperTexts'
+import { links } from '@/constants/links'
 import { getEntities, supabase } from '@/utils/actions'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
@@ -64,19 +66,19 @@ export default function EntityTable({ date }) {
 
 	const topContent = (
 		<div className="flex justify-between items-center ">
-			<Input isClearable aria-label="Search" value={filterValue} onValueChange={setFilterValue} onClear={() => onClear()} className="w-1/3 " labelPlacement="outside" placeholder="Arama" startContent={<SearchIcon />} type="text" />
+			<Input isClearable aria-label="Search" value={filterValue} onValueChange={setFilterValue} onClear={() => onClear()} className="w-1/3 " labelPlacement="outside" placeholder={placeHolders.search} startContent={<SearchIcon />} type="text" />
 			{/* <Button color="primary" size="sm" onPress={exportToPdf}>
 				Export{' '}
 			</Button> */}
 			<div className="flex w-1/2 sm:w-1/4 items-center justify-end gap-4">
-				<Select label="Grup" variant="underlined" size="sm" name="group" selectionMode="multiple" defaultSelectedKeys={['A', 'B']} onSelectionChange={setSelectedGroups}>
+				<Select label={labels.group} variant="underlined" size="sm" name="group" selectionMode="multiple" defaultSelectedKeys={['A', 'B']} onSelectionChange={setSelectedGroups}>
 					{groups.map(group => (
 						<SelectItem key={group.key}>{group.label}</SelectItem>
 					))}
 				</Select>
-				{pathName === '/giris' && (
+				{pathName === links.enter && (
 					<Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
-						Ekle
+						{texts.add}
 					</Button>
 				)}
 			</div>
@@ -107,7 +109,7 @@ export default function EntityTable({ date }) {
 					`${cellValue.split(':')[0]}:${cellValue.split(':')[1]}`
 				) : (
 					<Button color="success" size="sm" className="w-1/2" onPress={() => updateEnter(entity.id, new Date().toLocaleTimeString('tr-TR', { hour12: false }))}>
-						Giriş
+						{texts.enter}
 					</Button>
 				)
 			case 'exit':

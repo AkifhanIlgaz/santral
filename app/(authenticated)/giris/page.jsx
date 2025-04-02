@@ -1,48 +1,6 @@
 'use client'
 import EntityTable from '@/components/entityTable'
 
-const columns = [
-	{
-		key: 'group',
-		label: 'Grup'
-	},
-	{
-		key: 'no',
-		label: 'No'
-	},
-	{
-		key: 'name',
-		label: 'İsim'
-	},
-	{
-		key: 'to',
-		label: 'Nereye'
-	},
-	{
-		key: 'from',
-		label: 'Kimden'
-	},
-	{
-		key: 'exit',
-		label: 'Çıkış Saati'
-	},
-	{
-		key: 'enter',
-		label: 'Giriş Saati'
-	}
-]
-
-const groups = [
-	{
-		key: 'A',
-		label: 'A'
-	},
-	{
-		key: 'B',
-		label: 'B'
-	}
-]
-
 export default function GirisPage() {
 	const date = new Date()
 

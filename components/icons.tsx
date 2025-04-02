@@ -39,3 +39,5 @@ export const PlusIcon = ({ size = 24, ...props }) => {
 		</svg>
 	)
 }
+
+

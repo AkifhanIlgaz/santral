@@ -5,7 +5,7 @@ import { Metadata, Viewport } from 'next'
 import { Providers } from './providers'
 
 import { Navbar } from '@/components/navbar'
-import { fontSans } from '@/config/fonts'
+import { fontMontserrat } from '@/config/fonts'
 import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html suppressHydrationWarning lang="en">
 			<head />
-			<body className={clsx('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+			<body className={clsx('min-h-screen bg-background font-sans antialiased', fontMontserrat.className)}>
 				<Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
 					<div className="relative flex flex-col h-screen">
 						<Navbar />

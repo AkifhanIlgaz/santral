@@ -1,5 +1,6 @@
 'use client'
 import { PlusIcon, SearchIcon } from '@/components/icons'
+import { groups } from '@/constants/groups'
 import { getEntities, supabase } from '@/utils/actions'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
@@ -38,17 +39,6 @@ const columns = [
 	{
 		key: 'enter',
 		label: 'Giriş Saati'
-	}
-]
-
-const groups = [
-	{
-		key: 'A',
-		label: 'A'
-	},
-	{
-		key: 'B',
-		label: 'B'
 	}
 ]
 

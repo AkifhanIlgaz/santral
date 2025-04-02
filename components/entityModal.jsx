@@ -1,4 +1,7 @@
-import { getStudentName } from '@/types/students'
+import { approvedBy } from '@/constants/approvedBy'
+import { destinations } from '@/constants/destinations'
+import { groups } from '@/constants/groups'
+import { getStudentName } from '@/constants/students'
 import { createEntity } from '@/utils/actions'
 import { Button } from '@heroui/button'
 import { Form } from '@heroui/form'
@@ -7,107 +10,6 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@herou
 import { NumberInput } from '@heroui/number-input'
 import { Select, SelectItem } from '@heroui/select'
 import { useEffect, useState } from 'react'
-
-const groups = [
-	{
-		key: 'A',
-		label: 'A'
-	},
-	{
-		key: 'B',
-		label: 'B'
-	}
-]
-
-const destinations = [
-	{
-		key: 'Market',
-		label: 'Market'
-	},
-	{
-		key: 'ATM',
-		label: 'ATM'
-	},
-	{
-		key: 'Terzi',
-		label: 'Terzi'
-	},
-	{
-		key: 'Hastane',
-		label: 'Hastane'
-	},
-	{
-		key: 'Sohbet',
-		label: 'Sohbet'
-	},
-	{
-		key: 'Mukabele',
-		label: 'Mukabele'
-	},
-	{
-		key: 'Teravih',
-		label: 'Teravih'
-	},
-	{
-		key: 'İftar',
-		label: 'İftar'
-	},
-	{
-		key: 'Diğer',
-		label: 'Diğer'
-	}
-]
-
-const approvedBy = [
-	{
-		key: 'Cemil Abi',
-		label: 'Cemil Abi'
-	},
-	{
-		key: 'Hidayet Abi',
-		label: 'Hidayet Abi'
-	},
-	{
-		key: 'Gökhan Abi',
-		label: 'Gökhan Abi'
-	},
-	{
-		key: 'Mustafa Abi',
-		label: 'Mustafa Abi'
-	},
-	{
-		key: 'Arif Abi',
-		label: 'Arif Abi'
-	},
-	{
-		key: 'Alperen Abi',
-		label: 'Alperen Abi'
-	},
-	{
-		key: 'Salih Abi',
-		label: 'Salih Abi'
-	},
-	{
-		key: 'Faruk Abi',
-		label: 'Faruk Abi'
-	},
-	{
-		key: 'Rüçhan Abi',
-		label: 'Rüçhan Abi'
-	},
-	{
-		key: 'Selimhan Abi',
-		label: 'Selimhan Abi'
-	},
-	{
-		key: 'Eren Abi',
-		label: 'Eren Abi'
-	},
-	{
-		key: 'Diğer',
-		label: 'Diğer'
-	}
-]
 
 export default function EntityModal({ isOpen, onOpenChange, fetchTodaysEntities }) {
 	const [group, setGroup] = useState('')

@@ -6,6 +6,7 @@ import { Input } from '@heroui/input'
 import { useDisclosure } from '@heroui/modal'
 import { Select, SelectItem } from '@heroui/select'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
+import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import EntityModal from './entityModal'
 
@@ -52,6 +53,7 @@ const groups = [
 ]
 
 export default function EntityTable({ date }) {
+	const pathName = usePathname()
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const [filterValue, setFilterValue] = useState('')
 	const [selectedGroups, setSelectedGroups] = useState(new Set(['A', 'B']))
@@ -76,15 +78,17 @@ export default function EntityTable({ date }) {
 			{/* <Button color="primary" size="sm" onPress={exportToPdf}>
 				Export{' '}
 			</Button> */}
-			<div className="flex w-1/2 md:w-1/6 items-center justify-end gap-4">
+			<div className="flex w-1/2 sm:w-1/4 items-center justify-end gap-4">
 				<Select label="Grup" variant="underlined" size="sm" name="group" selectionMode="multiple" defaultSelectedKeys={['A', 'B']} onSelectionChange={setSelectedGroups}>
 					{groups.map(group => (
 						<SelectItem key={group.key}>{group.label}</SelectItem>
 					))}
 				</Select>
-				<Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
-					Ekle
-				</Button>
+				{pathName === '/giris' && (
+					<Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
+						Ekle
+					</Button>
+				)}
 			</div>
 		</div>
 	)

@@ -160,7 +160,7 @@ export default function EntityModal({ isOpen, onOpenChange, fetchTodaysEntities 
 									<SelectItem key={group.key}>{group.label}</SelectItem>
 								))}
 							</Select>
-							<NumberInput hideStepper label="No" size="sm" name="no" isRequired onChange={e => setNo(e?.target.value)} />
+							<NumberInput hideStepper label="No" size="sm" name="no" isRequired onChange={e => setNo(e.target?.value)} />
 							<Input label="İsim" labelPlacement="inside" size="sm" name="name" isReadOnly type="text" value={name} />
 							<Select label="Nereye" size="sm" isRequired name="to">
 								{destinations.map(t => (

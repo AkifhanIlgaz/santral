@@ -41,7 +41,6 @@ export async function logout() {
 export async function createEntity(data: any) {
 	const { data: result, error } = await supabase.from('Entities').insert(data)
 
-
 	if (error) {
 		console.error(error.message)
 		throw error

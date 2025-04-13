@@ -58,3 +58,12 @@ export async function getEntities(date: string) {
 
 	return data
 }
+
+export async function deleteEntity(id: any) {
+	const { error } = await supabase.from('Entities').delete().eq('id', id)
+
+	if (error) {
+		console.error(error.message)
+		throw error
+	}
+}

@@ -1,5 +1,5 @@
 'use client'
-import { PlusIcon, SearchIcon } from '@/components/icons'
+import { DeleteIcon, EditIcon, PlusIcon, SearchIcon } from '@/components/icons'
 import { groups } from '@/constants/groups'
 import { labels, placeHolders, texts } from '@/constants/helperTexts'
 import { links } from '@/constants/links'
@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from 
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import EntityModal from './entityModal'
+import TimeModal from './timeModal'
 
 const columns = [
 	{
@@ -41,12 +42,19 @@ const columns = [
 	{
 		key: 'enter',
 		label: 'Giriş Saati'
+	},
+	{
+		key: 'actions',
+		label: 'Sil'
 	}
 ]
 
 export default function EntityTable({ date }) {
 	const pathName = usePathname()
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const timeModal = useDisclosure()
+	const [timeField, setTimeField] = useState('')
+	const [selectedId, setSelectedId] = useState()
 	const [filterValue, setFilterValue] = useState('')
 	const [selectedGroups, setSelectedGroups] = useState(new Set(['A', 'B']))
 	const [items, setItems] = useState([])
@@ -91,7 +99,6 @@ export default function EntityTable({ date }) {
 			.update({ enter: enter })
 			.eq('id', id)
 			.then(res => {
-				console.log('Update response:', res)
 				if (res.error) {
 					console.error('Error updating enter time:', res.error)
 				} else {
@@ -100,13 +107,40 @@ export default function EntityTable({ date }) {
 			})
 	}
 
+	const onEntityDelete = id => {
+		supabase
+			.from('Entities')
+			.delete()
+			.eq('id', id)
+			.then(res => {
+				if (res.error) {
+					console.error('Error deleting entity:', res.error)
+					return
+				}
+				setItems(items.filter(item => item.id != id))
+			})
+	}
+
 	const renderCell = useCallback((entity, columnKey) => {
 		const cellValue = entity[columnKey]
+		const id = entity['id']
 
 		switch (columnKey) {
 			case 'enter':
 				return cellValue ? (
-					`${cellValue.split(':')[0]}:${cellValue.split(':')[1]}`
+					<div
+						className="flex gap-4"
+						onClick={() => {
+							setTimeField('enter')
+							setSelectedId(id)
+							timeModal.onOpen()
+						}}
+					>
+						{`${cellValue.split(':')[0]}:${cellValue.split(':')[1]}`}
+						<span className="text-lg text-primary cursor-pointer active:opacity-50">
+							<EditIcon />
+						</span>
+					</div>
 				) : (
 					<Button color="success" size="sm" className="w-1/2" onPress={() => updateEnter(entity.id, new Date().toLocaleTimeString('tr-TR', { hour12: false }))}>
 						{texts.enter}
@@ -114,7 +148,28 @@ export default function EntityTable({ date }) {
 				)
 			case 'exit':
 				const [hours, minutes] = cellValue.split(':')
-				return `${hours}:${minutes}`
+
+				return (
+					<div
+						className="flex gap-4"
+						onClick={() => {
+							setTimeField('exit')
+							setSelectedId(id)
+							timeModal.onOpen()
+						}}
+					>
+						{`${hours}:${minutes}`}
+						<span className="text-lg text-primary cursor-pointer active:opacity-50">
+							<EditIcon />
+						</span>
+					</div>
+				)
+			case 'actions':
+				return (
+					<span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => onEntityDelete(entity.id)}>
+						<DeleteIcon />
+					</span>
+				)
 			default:
 				return cellValue
 		}
@@ -138,6 +193,7 @@ export default function EntityTable({ date }) {
 
 	return (
 		<>
+			<TimeModal setItems={setItems} isOpen={timeModal.isOpen} onOpenChange={timeModal.onOpenChange} field={timeField} selectedId={selectedId} />
 			<EntityModal isOpen={isOpen} onOpenChange={onOpenChange} fetchTodaysEntities={fetchTodaysEntities} />
 			<Table aria-label="Example table with dynamic content" topContent={topContent} topContentPlacement="outside">
 				<TableHeader columns={columns}>{column => <TableColumn key={column.key}>{column.label}</TableColumn>}</TableHeader>

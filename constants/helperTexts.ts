@@ -25,9 +25,10 @@ export const errorMessages = {
 
 export const texts = {
 	login: 'Giriş Yap',
-    logout: "Çıkış Yap",
+	logout: 'Çıkış Yap',
 	cancel: 'İptal',
 	confirm: 'Onayla',
 	add: 'Ekle',
-	enter: 'Giriş'
+	enter: 'Giriş',
+	edit: 'Düzenle'
 }

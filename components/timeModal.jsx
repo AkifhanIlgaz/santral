@@ -3,7 +3,7 @@ import { supabase } from '@/utils/actions'
 import { Button } from '@heroui/button'
 import { TimeInput } from '@heroui/date-input'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/modal'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function TimeModal({ setItems, selectedId, field, isOpen, onOpenChange }) {
 	const [time, setTime] = useState()
@@ -29,23 +29,18 @@ export default function TimeModal({ setItems, selectedId, field, isOpen, onOpenC
 					updatedItems[idx] = res.data[0]
 					return updatedItems
 				})
-				console.log(res)
 			})
 	}
-
-	useEffect(() => {
-		console.log(time && time.toString())
-	}, [time])
 
 	return (
 		<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
 			<ModalContent>
 				{onClose => (
 					<>
-						<ModalHeader className="flex flex-col items-center justify-center gap-1">{`Düzenle`}</ModalHeader>
+						<ModalHeader className="flex flex-col items-center justify-center gap-1">{texts.edit}</ModalHeader>
 
 						<ModalBody className="flex w-full gap-4">
-							<TimeInput label={`${field} Saati`} value={time} onChange={setTime} />
+							<TimeInput label={generateLabel(field)} value={time} onChange={setTime} />
 						</ModalBody>
 						<ModalFooter className="flex w-full justify-center items-center">
 							<Button color="danger" onPress={onClose}>
@@ -67,4 +62,13 @@ export default function TimeModal({ setItems, selectedId, field, isOpen, onOpenC
 			</ModalContent>
 		</Modal>
 	)
+}
+
+const generateLabel = field => {
+	switch (field) {
+		case 'exit':
+			return 'Çıkış Saati'
+		case 'enter':
+			return 'Giriş Saati'
+	}
 }

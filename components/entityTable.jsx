@@ -195,7 +195,7 @@ export default function EntityTable({ date }) {
 		<>
 			<TimeModal setItems={setItems} isOpen={timeModal.isOpen} onOpenChange={timeModal.onOpenChange} field={timeField} selectedId={selectedId} />
 			<EntityModal isOpen={isOpen} onOpenChange={onOpenChange} fetchTodaysEntities={fetchTodaysEntities} />
-			<Table aria-label="Example table with dynamic content" topContent={topContent} topContentPlacement="outside">
+			<Table isStriped aria-label="Example table with dynamic content" topContent={topContent} topContentPlacement="outside">
 				<TableHeader columns={columns}>{column => <TableColumn key={column.key}>{column.label}</TableColumn>}</TableHeader>
 				<TableBody items={filteredItems}>{item => <TableRow key={item.key}>{columnKey => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>}</TableBody>
 			</Table>

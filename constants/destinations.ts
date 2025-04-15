@@ -20,6 +20,14 @@ export const destinations = [
 		label: 'Ekmek'
 	},
 	{
+		key: 'Okul',
+		label: 'Okul'
+	},
+	{
+		key: 'Sınav',
+		label: 'Sınav'
+	},
+	{
 		key: 'Sohbet',
 		label: 'Sohbet'
 	},

@@ -16,6 +16,10 @@ export const destinations = [
 		label: 'Hastane'
 	},
 	{
+		key: 'Ekmek',
+		label: 'Ekmek'
+	},
+	{
 		key: 'Sohbet',
 		label: 'Sohbet'
 	},

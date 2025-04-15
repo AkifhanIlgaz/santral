@@ -129,7 +129,7 @@ export default function EntityTable({ date }) {
 			case 'enter':
 				return cellValue ? (
 					<div
-						className="flex gap-4"
+						className="flex w-1/2 items-center justify-between "
 						onClick={() => {
 							setTimeField('enter')
 							setSelectedId(id)
@@ -151,7 +151,7 @@ export default function EntityTable({ date }) {
 
 				return (
 					<div
-						className="flex gap-4"
+						className="flex w-1/2 items-center justify-between "
 						onClick={() => {
 							setTimeField('exit')
 							setSelectedId(id)
@@ -159,7 +159,7 @@ export default function EntityTable({ date }) {
 						}}
 					>
 						{`${hours}:${minutes}`}
-						<span className="text-lg text-primary cursor-pointer active:opacity-50">
+						<span className="text-lg text-primary  cursor-pointer active:opacity-50">
 							<EditIcon />
 						</span>
 					</div>

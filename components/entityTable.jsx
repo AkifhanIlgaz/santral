@@ -63,7 +63,13 @@ export default function EntityTable({ date }) {
 		let filteredEntites = [...items]
 		const groups = [...selectedGroups.values()]
 
-		filteredEntites = filteredEntites.filter(entity => entity.name.toLowerCase().includes(filterValue.toLowerCase())).filter(entity => groups.includes(entity.group))
+		filteredEntites = filteredEntites
+			.filter(entity => entity.name.toLowerCase().includes(filterValue.toLowerCase()))
+			.sort((a, b) => {
+				if (!a.exit) return -1 // Items without enter time go to the end
+				if (!b.exit) return 1
+				return a.exit.localeCompare(b.exit)
+			})
 
 		return filteredEntites
 	}, [filterValue, items, selectedGroups])

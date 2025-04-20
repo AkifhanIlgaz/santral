@@ -11,8 +11,8 @@ import { Select, SelectItem } from '@heroui/select'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import EntityModal from './entityModal'
 import TimeModal from './timeModal'
+import ZiyaretModal from './ziyaretModal'
 
 const columns = [
 	{
@@ -28,14 +28,6 @@ const columns = [
 		label: 'İsim'
 	},
 	{
-		key: 'to',
-		label: 'Nereye'
-	},
-	{
-		key: 'from',
-		label: 'Kimden'
-	},
-	{
 		key: 'exit',
 		label: 'Çıkış Saati'
 	},
@@ -49,7 +41,7 @@ const columns = [
 	}
 ]
 
-export default function EntityTable({ date }) {
+export default function ZiyaretTable({ date }) {
 	const pathName = usePathname()
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const timeModal = useDisclosure()
@@ -201,7 +193,7 @@ export default function EntityTable({ date }) {
 	return (
 		<>
 			<TimeModal setItems={setItems} isOpen={timeModal.isOpen} onOpenChange={timeModal.onOpenChange} field={timeField} selectedId={selectedId} />
-			<EntityModal isOpen={isOpen} onOpenChange={onOpenChange} fetchTodaysEntities={fetchTodaysEntities} />
+			<ZiyaretModal isOpen={isOpen} onOpenChange={onOpenChange} fetchTodaysEntities={fetchTodaysEntities} />
 			<Table isStriped aria-label="Example table with dynamic content" topContent={topContent} topContentPlacement="outside">
 				<TableHeader columns={columns}>{column => <TableColumn key={column.key}>{column.label}</TableColumn>}</TableHeader>
 				<TableBody items={filteredItems}>{item => <TableRow key={item.key}>{columnKey => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>}</TableBody>
